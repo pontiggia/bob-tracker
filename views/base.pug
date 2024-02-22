@@ -1,0 +1,75 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+    link(rel="shortcut icon", href="/img/logo.png", type="image/x-icon")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap", rel="stylesheet")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,94.4,178;1,94.4,178&display=swap", rel="stylesheet")
+    title #{title}
+  body
+
+    //- Navegation bar
+    header
+      nav.navbar
+        ul.left__ul
+          li.left__element
+            h2 Bob Tracker
+        ul
+          li.center
+            img(src="/img/logo.png", alt="")
+        ul.right__ul
+          li.right__element
+            a(href="https://kick.com/agusbob")
+              img.header__img(src="/img/kick_logo.jpg", alt="")
+
+
+    //- Main (bets stats. bob stats card with wager, level, etc)
+    main
+      .div__main
+        h1 Estadisticas generales
+        each user in users
+          .card
+            .card__title
+              .card__title__left
+                img(src="/img/image.png", alt="")
+                h2= user.username
+              .card__title__right
+                h3= `VIP progress: ${user.progressToNextLevel}%`
+            .card__content
+              span Registrado en duelbits: 5 nov. 2020
+              .content__stats
+                span.wager= `Wager total: ${(user.totalWagered / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+                span.lucky= `Lucky wins (+ 25x): ${user.luckyWins}`
+                span.bets= `Total apuestas: ${bets.length}`
+                span.wins= `Total wins: ${user.totalWins}`
+                span.last__bet= `Última apuesta: ${user.lastBet.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })}`
+
+
+    //- bets table
+    section
+      h1 Apuestas recientes
+      .bets__section
+        .bets__header
+          span Juego
+          span Bet
+          span Pago
+          span Hora
+        - const startIdx = bets.length > 9 ? bets.length - 9 : 0
+        each bet, index in bets.slice(startIdx).reverse()
+          .bet__card
+            span= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
+            span= `${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span= `${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span= `${bet.timestamp.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'})} hs, ${bet.timestamp.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`
+
+    //- Footer
+    footer
+      span Mira a Agusbob en Kick: 
+      a(href="https://kick.com/agusbob")
+        img(src="/img/kick_logo.jpg", alt="")
