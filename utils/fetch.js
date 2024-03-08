@@ -2,14 +2,14 @@ const { exec } = require('child_process');
 
 const fetchFromPython = () => {
     return new Promise((resolve, reject) => {
-        exec('/usr/local/bin/python3 utils/fetch.py', (error, stdout, stderr) => {
+        exec('python utils/fetch.py', (error, stdout, stderr) => {
             if (error) {
                 reject(error);
                 return;
             }
             try {
                 const data = JSON.parse(stdout);
-                const user = "Annjana2205";
+                const user = "Agusbob";
                 const userBets = [];
                 const betIds = new Set(); // Conjunto para almacenar las IDs de las apuestas
 
