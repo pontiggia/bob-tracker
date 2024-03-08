@@ -1,32 +1,49 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 
 const fetchFromPython = () => {
     return new Promise((resolve, reject) => {
-        exec('python utils/fetch.py', (error, stdout, stderr) => {
-            if (error) {
-                reject(error);
-                return;
-            }
-            try {
-                const data = JSON.parse(stdout);
-                const user = "Agusbob";
-                const userBets = [];
-                const betIds = new Set(); // Conjunto para almacenar las IDs de las apuestas
+        // Ejecutar el script de Python
+        const pythonProcess = spawn('python', ['utils/fetch.py']);
 
-                Object.values(data)
-                    .flat()
-                    .filter((bet) => bet.user && bet.user.displayName === user)
-                    .forEach((bet) => {
-                        if (!betIds.has(bet.id)) {
-                            // Verificar si la ID de la apuesta ya existe en el conjunto
-                            userBets.push(bet);
-                            betIds.add(bet.id); // Agregar la ID de la apuesta al conjunto para evitar duplicados
-                        }
-                    });
+        let data = '';
 
-                resolve(userBets);
-            } catch (parseError) {
-                reject(parseError);
+        // Escuchar los datos de salida del script de Python
+        pythonProcess.stdout.on('data', (chunk) => {
+            data += chunk.toString();
+        });
+
+        // Manejar errores de ejecución del script de Python
+        pythonProcess.stderr.on('data', (error) => {
+            reject(error.toString());
+        });
+
+        // Escuchar el evento de finalización del proceso de Python
+        pythonProcess.on('close', (code) => {
+            if (code === 0) {
+                try {
+                    const jsonData = JSON.parse(data);
+
+                    const user = "Agusbob";
+                    const userBets = [];
+                    const betIds = new Set(); // Conjunto para almacenar las IDs de las apuestas
+
+                    Object.values(jsonData)
+                        .flat()
+                        .filter((bet) => bet.user && bet.user.displayName === user)
+                        .forEach((bet) => {
+                            if (!betIds.has(bet.id)) {
+                                // Verificar si la ID de la apuesta ya existe en el conjunto
+                                userBets.push(bet);
+                                betIds.add(bet.id); // Agregar la ID de la apuesta al conjunto para evitar duplicados
+                            }
+                        });
+
+                    resolve(userBets);
+                } catch (parseError) {
+                    reject(parseError);
+                }
+            } else {
+                reject(`Error al ejecutar el script de Python. Código de salida: ${code}`);
             }
         });
     });
