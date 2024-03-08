@@ -66,7 +66,7 @@ html(lang="en")
             span= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
             span= `$${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
             span= `$${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-            span= `${bet.timestamp.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'})} hs, ${bet.timestamp.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`
+            span= `${bet.timestamp.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'} - 3).slice(0,4)} hs, ${bet.timestamp.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`
 
     //- Footer
     footer
