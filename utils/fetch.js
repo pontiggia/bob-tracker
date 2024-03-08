@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 
 const fetchFromPython = () => {
     return new Promise((resolve, reject) => {
-        exec('/usr//bin/python3 utils/fetch.py', (error, stdout, stderr) => {
+        exec('/usr/bin/python3 utils/fetch.py', (error, stdout, stderr) => {
             if (error) {
                 reject(error);
                 return;
