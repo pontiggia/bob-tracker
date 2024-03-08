@@ -64,8 +64,8 @@ html(lang="en")
         each bet, index in bets.slice(startIdx).reverse()
           .bet__card
             span= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
-            span= `${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-            span= `${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span= `$${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span= `$${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
             span= `${bet.timestamp.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'})} hs, ${bet.timestamp.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`
 
     //- Footer
