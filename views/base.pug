@@ -48,7 +48,8 @@ html(lang="en")
                 span.lucky= `Lucky wins (+ 25x): ${user.luckyWins}`
                 span.bets= `Total apuestas: ${bets.length}`
                 span.wins= `Total wins: ${user.totalWins}`
-                span.last__bet= `Última apuesta: ${user.lastBet.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })}`
+                - const horaArgentina = new Date(user.lastBet.getTime() - (3 * 60 * 60 * 1000));
+                span.last__bet= `Última apuesta: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })}`
 
 
     //- bets table
