@@ -10,7 +10,7 @@ const updateStats = async (bet) => {
         user.lastBet = bet.timestamp;
         user.totalBets += 1;
         user.totalWagered += bet.bet;
-        //user.progressToNextLevel = bet.user.progress;
+        user.progressToNextLevel = bet.user.progress;
         if (bet.win > bet.bet) {
             user.totalWins += 1;
         }

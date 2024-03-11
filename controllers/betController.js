@@ -15,7 +15,7 @@ cron.schedule("*/20 * * * * *", async () => {
     for (const bet of bets) {
       const newBet = await createBet(bet);
       // Update user stats with the new bet
-      await updateStats(newBet);
+      await updateStats(bet);
       //console.log(newBet);
     }
   }
