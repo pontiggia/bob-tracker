@@ -1,42 +1,40 @@
-const puppeteer = require("puppeteer");
+const { exec } = require('child_process');
 
-const fetch = async () => {
-  try {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
+const fetchFromPython = () => {
+    return new Promise((resolve, reject) => {
+        exec('/usr/bin/python3 utils/fetch.py', (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            try {
+                const data = JSON.parse(stdout);
+                const user = "Agusbob";
+                const userBets = [];
 
-    await page.goto("https://ws.duelbits.com/user/bets/live");
-
-    const jsonData = await page.evaluate(async () => {
-      const response = await fetch("https://ws.duelbits.com/user/bets/live");
-      const data = await response.json();
-      return data;
+                Object.values(data)
+                    .flat()
+                    .filter((bet) => bet.user && bet.user.displayName === user)
+                    .forEach((bet) => {
+                        userBets.push(bet);
+                    });
+                
+                resolve(userBets);
+            } catch (parseError) {
+                reject(parseError);
+            }
+        });
     });
-
-    await browser.close();
-
-    const user = "Agusbob";
-    const userBets = [];
-    const betIds = new Set(); // Conjunto para almacenar las IDs de las apuestas
-
-    Object.values(jsonData)
-      .flat()
-      .filter((bet) => bet.user && bet.user.displayName === user)
-      .forEach((bet) => {
-        if (!betIds.has(bet.id)) {
-          // Verificar si la ID de la apuesta ya existe en el conjunto
-          userBets.push(bet);
-          betIds.add(bet.id); // Agregar la ID de la apuesta al conjunto para evitar duplicados
-        }
-      });
-    
-    return userBets;
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
 };
 
-fetch();
+// Utilizar la función para obtener los datos
+const obtenerDatos = async () => {
+    try {
+        const data = await fetchFromPython();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener los datos:', error);
+    }
+};
 
-module.exports = fetch;
+module.exports = obtenerDatos;
