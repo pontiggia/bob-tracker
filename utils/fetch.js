@@ -18,7 +18,7 @@ const fetchFromPython = () => {
                     .forEach((bet) => {
                         userBets.push(bet);
                     });
-                
+                console.log(userBets);
                 resolve(userBets);
             } catch (parseError) {
                 reject(parseError);

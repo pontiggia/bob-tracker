@@ -16,7 +16,7 @@ const updateStats = async (bet) => {
         }
         if (bet.lucky) {
             user.luckyWins += 1;
-        }
+        }   
         await user.save();
     }
     catch (err) {

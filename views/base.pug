@@ -32,7 +32,7 @@ html(lang="en")
     //- Main (bets stats. bob stats card with wager, level, etc)
     main
       .div__main
-        h1 Estadisticas generales
+        h1.title__main Estadisticas generales
         each user in users
           .card
             .card__title
@@ -50,6 +50,10 @@ html(lang="en")
                 span.wins= `Total wins: ${user.totalWins}`
                 - const horaArgentina = new Date(user.lastBet.getTime() - (3 * 60 * 60 * 1000));
                 span.last__bet= `Última apuesta: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })}`
+                span.top__slots Top 3 slot stats:
+                a(href="/Retro-Tapes").slot Retro Tapes
+                a(href="/Stormforged").slot Stormforged
+                a(href="/2 Wild 2 Die").slot 2 Wild 2 Die
 
 
     //- bets table

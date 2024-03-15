@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get('/', viewController.getOverview);
 
+router.get('/:slot', viewController.getSlotStats)
+
 module.exports = router;
