@@ -1,82 +1,33 @@
 doctype html
 html(lang="en")
   head
-    meta(charset="UTF-8")
+  block head
+    title Bob Tracker
+    // Required meta tags
+    meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href="/css/style.css")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+    // Fonts and icons
     link(rel="shortcut icon", href="/img/logo.png", type="image/x-icon")
-    link(rel="preconnect", href="https://fonts.googleapis.com")
-    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
-    link(href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap", rel="stylesheet")
-    link(rel="preconnect", href="https://fonts.googleapis.com")
-    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
-    link(href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,94.4,178;1,94.4,178&display=swap", rel="stylesheet")
-    title #{title}
-  body
+    link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css")
+    // Material Icons
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons+Round", rel="stylesheet")
+    // Material Kit CSS
+    link(href="/assets/css/material-kit.css?v=3.0.0", rel="stylesheet")
 
-    //- Navegation bar
-    header
-      nav.navbar
-        ul.left__ul
-          li.left__element
-            h2 Bob Tracker
-        ul
-          li.center
-            img(src="/img/logo.png", alt="")
-        ul.right__ul
-          li.right__element
-            a(href="https://kick.com/agusbob")
-              img.header__img(src="/img/kick_logo.jpg", alt="")
+  body(style="background-color: #181b1d;")
+    // HEADER
+    include _header
 
+    // CONTENT
+    block content
+      h1 This is a placeholder heading
 
-    //- Main (bets stats. bob stats card with wager, level, etc)
-    main
-      .div__main
-        h1.title__main Estadisticas generales
-        each user in users
-          .card
-            .card__title
-              .card__title__left
-                img(src="/img/image.png", alt="")
-                h2= user.username
-              .card__title__right
-                h3= `VIP progress: ${user.progressToNextLevel * 100}%`
-            .card__content
-              span Registrado en duelbits: 5 nov. 2020
-              .content__stats
-                span.wager= `Wager total: ${(user.totalWagered / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-                span.lucky= `Lucky wins (+ 25x): ${user.luckyWins}`
-                span.bets= `Total apuestas: ${bets.length}`
-                span.wins= `Total wins: ${user.totalWins}`
-                - const horaArgentina = new Date(user.lastBet.getTime() - (3 * 60 * 60 * 1000));
-                span.last__bet= `Última apuesta: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })}`
-                span.top__slots Top 3 slot stats:
-                a(href="/Retro-Tapes").slot Retro Tapes
-                a(href="/Stormforged").slot Stormforged
-                a(href="/2 Wild 2 Die").slot 2 Wild 2 Die
-
-
-    //- bets table
-    section
-      h1 Apuestas recientes
-      .bets__section
-        .bets__header
-          span Juego
-          span Bet
-          span Pago
-          span Hora
-        - const startIdx = bets.length > 9 ? bets.length - 9 : 0
-        each bet, index in bets.slice(startIdx).reverse()
-          .bet__card
-            span= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
-            span= `$${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-            span= `$${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-            - const horaArgentina = new Date(bet.timestamp.getTime() - (3 * 60 * 60 * 1000));
-            span= `${horaArgentina.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'}).slice(0,5)} hs, ${horaArgentina.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`
-
-
-    //- Footer
-    footer
-      span Mira a Agusbob en Kick: 
-      a(href="https://kick.com/agusbob")
-        img(src="/img/kick_logo.jpg", alt="")
+    // FOOTER
+    footer.footer.pt-5(style='border-top: 2px solid #fff;')
+    .container
+      .row
+        p.text-center.font-weight-bold.text-secondary.text-white(style="font-size: 1.2rem;") Mira Agusbob en 
+          a(href="" style="text-decoration: underline;color: #fff;") Kick!
+      p.text-center.font-weight-bold.text-secondary.text-white Dev by Ponti

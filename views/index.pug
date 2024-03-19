@@ -1,0 +1,45 @@
+extends base
+
+block content
+  .card.card-body.shadow-xl.mx-3.mx-md-4.mt-n6(style="background-color: #181b1d;")
+    .container
+    each user in users
+      .row(style="margin-left: 50px;")
+        .col-lg-6.my-auto
+          h1.mt-5.mt-lg-0.text-white(style="margin-bottom: 25px;") Agusbob
+          p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;") Registrado en duelbits: 5 nov. 2020
+          br
+          p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `VIP Progress: ${user.progressToNextLevel * 100}%` 
+          br
+          - const horaArgentina = new Date(user.lastBet.getTime() - (3 * 60 * 60 * 1000));
+          p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Última apuesta: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })} hs`
+          br
+          a.text-primary.icon-move-right(href="/slots", style="font-size: 1.1rem;") Todos los slots jugados
+            i.material-icons.text-sm.ms-1.position-relative(aria-hidden="true") arrow_forward
+        .col-lg-6.mt-lg-0.mt-5.ps-lg-0.ps-0
+          .margin__top(style="margin-top: 130px;")
+            p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Wager total: $${(user.totalWagered / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            br
+            p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Total apuestas: ${user.totalBets}`
+            br
+            p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Total wins: ${user.totalWins}`
+            br
+            p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Lucky wins (+ 25x): ${user.luckyWins}`
+            br
+
+
+      h2.text-center.text-white(style="margin-top: 100px;") Apuestas recientes
+      .d-flex.justify-content-around.mb-3(style="margin-top: 70px;")
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Slot
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Bet
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Pago
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem") Hora
+      - const startIdx = bets.length > 9 ? bets.length - 9 : 0
+      each bet, index in bets.slice(startIdx).reverse()
+        .card.card-frame(style="margin-top: 15px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);background-color: #1c2021e0;")
+          .d-flex.justify-content-around.mb-3
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `$${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `$${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            - const horaArgentina = new Date(bet.timestamp.getTime() - (3 * 60 * 60 * 1000));
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `${horaArgentina.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'}).slice(0,5)} hs, ${horaArgentina.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`

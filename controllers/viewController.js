@@ -1,11 +1,12 @@
 const Bet = require("../models/betsModel");
 const User = require("../models/usersModel");
+const Slots = require("../models/slotsModel");
 
 exports.getOverview = async (req, res) => {
   try {
     const bets = await Bet.find();
     const users = await User.find();
-    res.status(200).render("base", {
+    res.status(200).render("index", {
       title: "Bob Tracker",
       bets,
       users,
@@ -41,7 +42,7 @@ exports.getSlotStats = async (req, res) => {
         luckyWins += 1;
       }
     });
-    res.status(200).render("slots", {
+    res.status(200).render("slot_info", {
         game: slot,
         totalBets,
         totalWagered,
@@ -56,4 +57,22 @@ exports.getSlotStats = async (req, res) => {
         message: error,
       });
   }
+};
+
+
+exports.getSlotsTitle = async (req, res) => {
+  try {
+    // get slots from the database
+    const slots = await Slots.find();
+
+    res.status(200).render("slots", {
+      title: "Slots",
+      slots,
+    });
+
+  } catch (error) {
+    
+  }
+
+
 };
