@@ -9,7 +9,7 @@ exports.getOverview = async (req, res) => {
     res.status(200).render("index", {
       title: "Bob Tracker",
       bets,
-      users,
+      users
     });
   } catch (err) {
     res.status(404).json({
@@ -43,6 +43,7 @@ exports.getSlotStats = async (req, res) => {
       }
     });
     res.status(200).render("slot_info", {
+        bets,
         game: slot,
         totalBets,
         totalWagered,

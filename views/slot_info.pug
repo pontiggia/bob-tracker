@@ -59,3 +59,20 @@ html(lang="en")
             h5.text-white.font-weight-bold= `Ganadas: ${totalWins}`
           .col.text-center
             h5.text-white.font-weight-bold= `Lucky wins: ${luckyWins}`
+
+
+      h2.text-center.text-white(style="margin-top: 100px;") Apuestas recientes
+      .d-flex.justify-content-around.mb-3(style="margin-top: 70px;")
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Slot
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Bet
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem;") Pago
+        .p-2.font-weight-bold.text-white(style="font-size: 1.2rem") Hora
+      - const startIdx = bets.length > 15 ? bets.length - 15 : 0
+      each bet, index in bets.slice(startIdx).reverse()
+        .card.card-frame(style="margin-top: 15px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);background-color: #1c2021e0;")
+          .d-flex.justify-content-around.mb-3
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= bet.title.length > 15 ? bet.title.slice(0, 14) + '...' : bet.title
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `$${(bet.bet / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `$${(bet.win / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+            - const horaArgentina = new Date(bet.timestamp.getTime() - (3 * 60 * 60 * 1000));
+            span.p-2.font-weight-bold.text-white(style="margin-top: 10px;")= `${horaArgentina.toLocaleTimeString('es-ES', {hour: 'numeric', minute: 'numeric'}).slice(0,5)} hs, ${horaArgentina.toLocaleDateString('es-ES', {day: 'numeric', month: 'numeric'})}`

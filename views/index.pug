@@ -12,7 +12,7 @@ block content
           p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `VIP Progress: ${user.progressToNextLevel * 100}%` 
           br
           - const horaArgentina = new Date(user.lastBet.getTime() - (3 * 60 * 60 * 1000));
-          p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Última apuesta: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })} hs`
+          p.pe-5.font-weight-bold.text-white(style="font-size: 1.1rem;")= `Última cagada: ${horaArgentina.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: 'numeric', minute: 'numeric' })} hs`
           br
           a.text-primary.icon-move-right(href="/slots", style="font-size: 1.1rem;") Todos los slots jugados
             i.material-icons.text-sm.ms-1.position-relative(aria-hidden="true") arrow_forward
