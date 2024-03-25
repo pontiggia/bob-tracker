@@ -9,7 +9,7 @@ exports.getOverview = async (req, res) => {
     res.status(200).render("index", {
       title: "Bob Tracker",
       bets,
-      users
+      users,
     });
   } catch (err) {
     res.status(404).json({
@@ -23,40 +23,34 @@ exports.getOverview = async (req, res) => {
 
 exports.getSlotStats = async (req, res) => {
   try {
-    let slot = req.params.slot;
-    slot = slot.replace('-', " ")
+    const slot = req.params.slot.replace("-", " ");
     const bets = await Bet.find({ title: slot });
-    let totalBets = bets.length;
-    let totalWagered = 0;
-    let totalWins = 0;
-    let totalEarn = 0;
-    let luckyWins = 0;
+    // Calcular las estadísticas utilizando agregación de MongoDB
+    const stats = await Bet.aggregate([
+      { $match: { title: slot } },
+      {
+        $group: {
+          _id: null,
+          totalBets: { $sum: 1 },
+          totalWagered: { $sum: "$bet" },
+          totalWins: { $sum: { $cond: [{ $gt: ["$win", "$bet"] }, 1, 0] } },
+          totalEarn: { $sum: "$win" },
+          luckyWins: { $sum: { $cond: ["$lucky", 1, 0] } },
+        },
+      },
+    ]);
 
-    bets.forEach((bet) => {
-      totalWagered += bet.bet;
-      totalEarn += bet.win;
-      if (bet.win > bet.bet) {
-        totalWins += 1;
-      }
-      if (bet.lucky) {
-        luckyWins += 1;
-      }
-    });
+    // Renderizar la vista con las estadísticas
     res.status(200).render("slot_info", {
-        bets,
-        game: slot,
-        totalBets,
-        totalWagered,
-        totalWins,
-        totalEarn,
-        luckyWins
-      });
-
+      bets: [], // No se necesitan todas las apuestas aquí, solo las estadísticas
+      game: slot,
+      ...stats[0], 
+      bets
+    });
   } catch (error) {
-    res.status(404).json({
-        status: "fail",
-        message: error,
-      });
+    res
+      .status(500)
+      .json({ status: "error", message: "Internal server error." });
   }
 };
 
@@ -70,10 +64,5 @@ exports.getSlotsTitle = async (req, res) => {
       title: "Slots",
       slots,
     });
-
-  } catch (error) {
-    
-  }
-
-
+  } catch (error) {}
 };
