@@ -5,22 +5,23 @@ const betFetch = require("../utils/fetch");
 const createBet = require("../utils/createBet");
 const updateStats = require("../utils/updateStats");
 
-cron.schedule("*/20 * * * * *", async () => {
+//cron.schedule("*/20 * * * * *", async () => {
   // Fetch bets
-  const bets = await betFetch();
+//  const bets = await betFetch();
   // Check if there are bets to insert
-  if (bets.length == 0) {
-    return console.log("No new bets");
-  } else {
+//  if (bets.length == 0) {
+//    return console.log("No new bets");
+//  } else {
     // Insert bets into the database sequentially
-    for (const bet of bets) {
-      const newBet = await createBet(bet);
+//    for (const bet of bets) {
+//      const newBet = await createBet(bet);
       // Update user stats with the new bet
-      await updateStats(bet);
+//      await updateStats(bet);
       //console.log(newBet);
-    }
-  }
-});
+//    }
+//  }
+//});
+
 
 exports.getAllBets = async (req, res) => {
   try {
